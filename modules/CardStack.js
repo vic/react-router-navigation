@@ -3,7 +3,7 @@
 /* eslint react/no-unused-prop-types: 0 */
 
 import React from 'react'
-import { BackHandler } from 'react-native'
+import { BackHandler, BackAndroid } from 'react-native'
 import { matchPath } from 'react-router'
 import { StateUtils } from 'react-navigation'
 import type { RouterHistory, Location } from 'react-router'
@@ -74,13 +74,13 @@ class CardStack extends React.PureComponent<void, Props, State> {
   componentDidMount(): void {
     const { history } = this.props
     this.unlistenHistory = HistoryUtils.runHistoryListenner(history, this.onListenHistory)
-    BackHandler.addEventListener('hardwareBackPress', this.onNavigateBack)
+    (BackAndroid || BackHandler).addEventListener('hardwareBackPress', this.onNavigateBack)
   }
 
   // Remove all listeners
   componentWillUnmount(): void {
     this.unlistenHistory()
-    BackHandler.removeEventListener('hardwareBackPress', this.onNavigateBack)
+    (BackAndroid || BackHandler).removeEventListener('hardwareBackPress', this.onNavigateBack)
   }
 
   // Update cards
